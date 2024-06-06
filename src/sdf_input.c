@@ -337,7 +337,7 @@ int sdf_read_blocklist(sdf_file_t *h)
     while (next) {
         b = next;
         next = b->next;
-        if (b->blocktype == SDF_BLOCKTYPE_PLAIN_VARIABLE && b->stagger) {
+        if (b->ndims < 4 && b->blocktype == SDF_BLOCKTYPE_PLAIN_VARIABLE && b->stagger) {
             fix = 0;
             mesh = sdf_find_block_by_id(h, b->mesh_id);
             for (i = 0; i < b->ndims; i++) {
@@ -520,7 +520,7 @@ static int sdf_read_next_block_header(sdf_file_t *h)
         b->stagger = SDF_STAGGER_VERTEX;
     else
         b->stagger = SDF_STAGGER_CELL_CENTRE;
-    for (i = 0; i < 3; i++) b->dims[i] = 1;
+    for (i = 0; i < b->ndims; i++) b->dims[i] = 1;
 
     if (b->blocktype == SDF_BLOCKTYPE_STATION)
         h->station_file = 1;

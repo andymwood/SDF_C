@@ -774,6 +774,9 @@ int sdf_factor(sdf_file_t *h)
     int64_t old_dims[6];
     int local_dims[SDF_MAXDIMS];
 
+    if (b->ndims > 3)
+       return 0;
+
     // Adjust dimensions to those of a cell-centred variable
     for (n = 0; n < b->ndims; n++) {
         old_dims[n] = b->dims[n];
@@ -799,7 +802,7 @@ int sdf_factor(sdf_file_t *h)
     for (n = b->ndims; n < 3; n++)
         b->local_dims[n] = 1;
 #else
-    for (n = 0; n < 3; n++) b->local_dims[n] = b->dims[n];
+    for (n = 0; n < b->ndims; n++) b->local_dims[n] = b->dims[n];
 #endif
 
     if (b->blocktype == SDF_BLOCKTYPE_PLAIN_MESH) {
